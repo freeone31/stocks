@@ -3,14 +3,14 @@ package com.bkstest.stocks;
 import java.io.Serializable;
 import java.util.Objects;
 
-public class Stock implements Serializable {
+public class CompanyStocks implements Serializable {
     private String symbol;
     private int volume;
 
-    public Stock() {
+    public CompanyStocks() {
     }
 
-    public Stock(String symbol, int volume) {
+    public CompanyStocks(String symbol, int volume) {
         this.symbol = symbol;
         this.volume = volume;
     }
@@ -36,14 +36,18 @@ public class Stock implements Serializable {
         if (o == null) {
             return false;
         }
+
         if (this == o) {
             return true;
         }
-        if (!(o instanceof Stock)) {
+
+        if (!(o instanceof CompanyStocks)) {
             return false;
         }
-        Stock stock = (Stock) o;
-        return getVolume() == stock.getVolume() && Objects.equals(getSymbol(), stock.getSymbol());
+
+        CompanyStocks companyStocks = (CompanyStocks) o;
+
+        return getVolume() == companyStocks.getVolume() && Objects.equals(getSymbol(), companyStocks.getSymbol());
     }
 
     @Override
@@ -53,6 +57,6 @@ public class Stock implements Serializable {
 
     @Override
     public String toString() {
-        return "Stock{" + "symbol='" + symbol + '\'' + ", volume=" + volume + '}';
+        return "CompanyStocks{" + "symbol='" + symbol + '\'' + ", volume=" + volume + '}';
     }
 }

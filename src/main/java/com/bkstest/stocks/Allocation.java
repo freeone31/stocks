@@ -1,5 +1,7 @@
 package com.bkstest.stocks;
 
+import java.util.Objects;
+
 public class Allocation {
     private String sector;
     private double assetValue;
@@ -33,5 +35,34 @@ public class Allocation {
 
     public void setProportion(double proportion) {
         this.proportion = proportion;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null) {
+            return false;
+        }
+
+        if (this == o) {
+            return true;
+        }
+
+        if (!(o instanceof Allocation)) {
+            return false;
+        }
+
+        Allocation that = (Allocation) o;
+
+        return Double.compare(that.getAssetValue(), getAssetValue()) == 0 && Double.compare(that.getProportion(), getProportion()) == 0 && Objects.equals(getSector(), that.getSector());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getSector(), getAssetValue(), getProportion());
+    }
+
+    @Override
+    public String toString() {
+        return "Allocation{" + "sector='" + sector + '\'' + ", assetValue=" + assetValue + ", proportion=" + proportion + '}';
     }
 }

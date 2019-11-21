@@ -5,20 +5,20 @@ import java.util.List;
 import java.util.Objects;
 
 public class Asset implements Serializable {
-    private List<Stock> stocks;
+    private List<CompanyStocks> stocks;
 
     public Asset() {
     }
 
-    public Asset(List<Stock> stocks) {
+    public Asset(List<CompanyStocks> stocks) {
         this.stocks = stocks;
     }
 
-    public List<Stock> getStocks() {
+    public List<CompanyStocks> getStocks() {
         return stocks;
     }
 
-    public void setStocks(List<Stock> stocks) {
+    public void setStocks(List<CompanyStocks> stocks) {
         this.stocks = stocks;
     }
 
@@ -27,19 +27,22 @@ public class Asset implements Serializable {
         if (o == null) {
             return false;
         }
+
         if (this == o) {
             return true;
         }
+
         if (!(o instanceof Asset)) {
             return false;
         }
+
         Asset asset = (Asset) o;
+
         return Objects.equals(getStocks(), asset.getStocks());
     }
 
     @Override
     public int hashCode() {
-
         return Objects.hash(getStocks());
     }
 
