@@ -1,13 +1,14 @@
 package com.bkstest.stocks;
 
+import java.math.BigDecimal;
 import java.util.Objects;
 
 public class Allocation {
     private String sector;
-    private double assetValue;
-    private double proportion;
+    private BigDecimal assetValue;
+    private BigDecimal proportion;
 
-    public Allocation(String sector, double assetValue, double proportion) {
+    public Allocation(String sector, BigDecimal assetValue, BigDecimal proportion) {
         this.sector = sector;
         this.assetValue = assetValue;
         this.proportion = proportion;
@@ -21,19 +22,19 @@ public class Allocation {
         this.sector = sector;
     }
 
-    public double getAssetValue() {
+    public BigDecimal getAssetValue() {
         return assetValue;
     }
 
-    public void setAssetValue(double assetValue) {
+    public void setAssetValue(BigDecimal assetValue) {
         this.assetValue = assetValue;
     }
 
-    public double getProportion() {
+    public BigDecimal getProportion() {
         return proportion;
     }
 
-    public void setProportion(double proportion) {
+    public void setProportion(BigDecimal proportion) {
         this.proportion = proportion;
     }
 
@@ -53,7 +54,7 @@ public class Allocation {
 
         Allocation that = (Allocation) o;
 
-        return Double.compare(that.getAssetValue(), getAssetValue()) == 0 && Double.compare(that.getProportion(), getProportion()) == 0 && Objects.equals(getSector(), that.getSector());
+        return Objects.equals(getSector(), that.getSector()) && Objects.equals(getAssetValue(), that.getAssetValue()) && Objects.equals(getProportion(), that.getProportion());
     }
 
     @Override

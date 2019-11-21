@@ -3,6 +3,7 @@ package com.bkstest.stocks;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,9 +14,9 @@ public class IexCloud {
 
     public Portfolio getPortfolio(Asset asset) throws Exception {
         try {
-            Map<String, Double> sectorsMoney = new HashMap<>();
+            Map<String, BigDecimal> sectorsMoney = new HashMap<>();
 
-            double totalSum = 0;
+            BigDecimal totalSum = new BigDecimal(0);
 
             for (CompanyStocks companyStocks : asset.getStocks()) {
                 ObjectMapper objectMapper = new ObjectMapper();
@@ -32,13 +33,13 @@ public class IexCloud {
 
                 JsonNode latestPriceJson = objectMapper.readTree(sendHttpRequestToIexCloud(companyStocks.getSymbol().toLowerCase() + "/quote", params));
 
-                double latestPrice = latestPriceJson.get("latestPrice").asDouble();
-                double currentSum = latestPrice * companyStocks.getVolume();
+                BigDecimal latestPrice = new BigDecimal(latestPriceJson.get("latestPrice").asDouble());
+                BigDecimal currentSum = latestPrice.multiply(new BigDecimal(companyStocks.getVolume()));
 
-                totalSum += currentSum;
+                totalSum = totalSum.add(currentSum);
 
                 if (sectorsMoney.containsKey(sector)) {
-                    sectorsMoney.put(sector, sectorsMoney.get(sector) + currentSum);
+                    sectorsMoney.put(sector, sectorsMoney.get(sector).add(currentSum));
                 } else {
                     sectorsMoney.put(sector, currentSum);
                 }
@@ -48,9 +49,11 @@ public class IexCloud {
 
             Portfolio portfolio = new Portfolio(totalSum, allocations);
 
-            for (Map.Entry<String, Double> entry : sectorsMoney.entrySet()) {
-                allocations.add(new Allocation(entry.getKey(), entry.getValue(), entry.getValue() / totalSum));
+            for (Map.Entry<String, BigDecimal> entry : sectorsMoney.entrySet()) {
+                allocations.add(new Allocation(entry.getKey(), entry.getValue().setScale(2, BigDecimal.ROUND_DOWN), entry.getValue().divide(totalSum, BigDecimal.ROUND_DOWN).setScale(3, BigDecimal.ROUND_HALF_UP)));
             }
+
+            portfolio.setValue(totalSum.setScale(2, BigDecimal.ROUND_DOWN));
 
             return portfolio;
 

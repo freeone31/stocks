@@ -1,29 +1,30 @@
 package com.bkstest.stocks;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
 
 public class Portfolio {
-    private double value;
+    private BigDecimal value;
     private List<Allocation> allocations;
 
     public Portfolio() {
     }
 
-    public Portfolio(double value) {
+    public Portfolio(BigDecimal value) {
         this.value = value;
     }
 
-    public Portfolio(double value, List<Allocation> allocations) {
+    public Portfolio(BigDecimal value, List<Allocation> allocations) {
         this.value = value;
         this.allocations = allocations;
     }
 
-    public double getValue() {
+    public BigDecimal getValue() {
         return value;
     }
 
-    public void setValue(double value) {
+    public void setValue(BigDecimal value) {
         this.value = value;
     }
 
@@ -51,11 +52,12 @@ public class Portfolio {
 
         Portfolio portfolio = (Portfolio) o;
 
-        return Double.compare(portfolio.getValue(), getValue()) == 0 && Objects.equals(getAllocations(), portfolio.getAllocations());
+        return Objects.equals(getValue(), portfolio.getValue()) && Objects.equals(getAllocations(), portfolio.getAllocations());
     }
 
     @Override
     public int hashCode() {
+
         return Objects.hash(getValue(), getAllocations());
     }
 
