@@ -41,6 +41,6 @@ class StocksApplicationTests {
 
         String content = new ObjectMapper().writeValueAsString(new Asset(stocks));
 
-        mockMvc.perform(post("/portfolio").content(content).contentType(MediaType.APPLICATION_JSON_VALUE)).andDo(print()).andExpect(status().isOk()).andExpect(jsonPath("$.value", greaterThan(0d))).andExpect(jsonPath("$.allocations", hasSize(greaterThan(0))));
+        mockMvc.perform(post("/portfolio").content(content).contentType(MediaType.APPLICATION_JSON_VALUE)).andDo(print()).andExpect(status().isOk()).andExpect(jsonPath("$.value", greaterThan(1d))).andExpect(jsonPath("$.allocations", hasSize(greaterThan(1))));
     }
 }
