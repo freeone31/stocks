@@ -20,6 +20,7 @@ public enum Config {
                 }
 
                 token = config.get("iextoken").asText();
+                System.out.println("Токен получен из конфига.");
 
             } catch (Exception e) {
                 System.out.println("Не удалось получить токен из конфига. " + e.toString());
@@ -30,6 +31,7 @@ public enum Config {
                     throw new Exception("Не удалось получить токен для отправки запросов на сервис IEX Cloud.");
                 } else {
                     token = System.getProperty("iextoken");
+                    System.out.println("Токен получен из переданных свойств.");
                 }
             }
         } catch (Exception e) {
