@@ -11,17 +11,29 @@ public enum Config {
     private String token;
 
     Config() {
-        try (FileReader fileReader = new FileReader("../config.json")) {
-            JsonNode config = new ObjectMapper().readTree(fileReader);
+        try {
+            try (FileReader fileReader = new FileReader("../config.json")) {
+                JsonNode config = new ObjectMapper().readTree(fileReader);
 
-            if (!config.has("iextoken") || config.get("iextoken").isNull() || config.get("iextoken").asText() == null || config.get("iextoken").asText().isEmpty()) {
-                throw new Exception("В файле конфигурации не указан токен для отправки запросов на сервис IEX Cloud.");
+                if (!config.has("iextoken") || config.get("iextoken").isNull() || config.get("iextoken").asText() == null || config.get("iextoken").asText().isEmpty()) {
+                    throw new Exception("В конфиге не указан токен для отправки запросов на сервис IEX Cloud.");
+                }
+
+                token = config.get("iextoken").asText();
+
+            } catch (Exception e) {
+                System.out.println("Не удалось получить токен из конфига. " + e.toString());
             }
 
-            token = config.get("iextoken").asText();
-
+            if (token == null || token.isEmpty()) {
+                if (System.getProperty("iextoken") == null || System.getProperty("iextoken").isEmpty()) {
+                    throw new Exception("Не удалось получить токен для отправки запросов на сервис IEX Cloud.");
+                } else {
+                    token = System.getProperty("iextoken");
+                }
+            }
         } catch (Exception e) {
-            System.out.println("Ошибка при инициализации конфига приложения");
+            System.out.println("Ошибка при инициализации приложения");
             e.printStackTrace();
             System.out.println("Выход из приложения...");
             System.exit(1);
